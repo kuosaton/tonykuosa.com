@@ -72,13 +72,20 @@ h2 {
   margin-bottom: 2rem;
 }
 
+.subtitle-small {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
 .intro {
   color: var(--text-primary);
   margin-bottom: 2.5rem;
 }
 
 section {
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
 }
 
 .links {
@@ -141,8 +148,8 @@ a:hover {
 }
 
 footer {
-  margin-top: 4rem;
-  padding-top: 1.5rem;
+  margin-top: 3rem;
+  padding-top: 1rem;
   border-top: 1px solid var(--border);
   font-family: var(--mono);
   font-size: 0.7rem;
