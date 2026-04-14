@@ -1,2 +1,0 @@
-# tonykuosa.com
-Personal website
