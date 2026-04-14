@@ -6,6 +6,18 @@
   box-sizing: border-box;
 }
 
+.source-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.icon {
+  width: 14px;
+  height: 14px;
+  vertical-align: middle;
+}
+
 :root {
   --bg: #111110;
   --text: #e7e5e4;
@@ -141,4 +153,10 @@ footer {
   font-family: var(--mono);
   font-size: 0.7rem;
   color: var(--text-secondary);
+}
+
+footer p {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
 }
