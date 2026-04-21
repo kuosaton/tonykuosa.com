@@ -7,12 +7,16 @@
     <title>Tony Kuosa</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <script
-      src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-      async
-      defer
-    ></script>
     <script>
+      function showTurnstile() {
+        document.getElementById('thesis-download-btn').hidden = true
+        document.getElementById('thesis-turnstile').hidden = false
+        if (!document.querySelector('script[src*="turnstile"]')) {
+          var s = document.createElement('script')
+          s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js'
+          document.head.appendChild(s)
+        }
+      }
       function onTurnstileSuccess(token) {
         document.getElementById('thesis-turnstile').hidden = true
         var link = document.getElementById('thesis-download')
@@ -90,7 +94,10 @@
             </p>
             <p class="work-item-meta">BSc thesis (PDF, 1.45 MB)</p>
           </div>
-          <div id="thesis-turnstile">
+          <button id="thesis-download-btn" class="work-item-meta thesis-download-link" onclick="showTurnstile()">
+            Download PDF
+          </button>
+          <div id="thesis-turnstile" hidden>
             <div
               class="cf-turnstile"
               data-sitekey="0x4AAAAAADAGK0JjHhqSRt6r"

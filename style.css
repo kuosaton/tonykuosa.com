@@ -151,6 +151,10 @@ a:hover {
 .thesis-download-link {
   margin-top: 0.75rem;
   color: var(--accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
 }
 
 footer {
