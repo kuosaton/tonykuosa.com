@@ -8,6 +8,27 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
     <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon" />
+    <script
+      src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+      async
+      defer
+    ></script>
+    <script>
+      function onTurnstileSuccess(token) {
+        document.getElementById('thesis-turnstile').hidden = true
+        var link = document.getElementById('thesis-download')
+        link.href = atob('YXNzZXRzL3RoZXNpcy5jNmQ5M2JhZDA2NGQucGRm')
+        link.hidden = false
+      }
+      function onTurnstileError(errorCode) {
+        document.getElementById('thesis-turnstile').hidden = false
+        document.getElementById('thesis-download').hidden = true
+      }
+      function onTurnstileExpired() {
+        document.getElementById('thesis-turnstile').hidden = false
+        document.getElementById('thesis-download').hidden = true
+      }
+    </script>
   </head>
 
   <body>
@@ -64,11 +85,28 @@
       <section>
         <h2>My work</h2>
         <div class="work-item">
-          <a href="assets/thesis.pdf"
-            ><p class="work-item-name">
+          <div id="thesis-info">
+            <p class="work-item-name">
               Large Language Model-based Methods for Phishing Email Detection
             </p>
             <p class="work-item-meta">BSc thesis (PDF, 1.45 MB)</p>
+          </div>
+          <div id="thesis-turnstile">
+            <div
+              class="cf-turnstile"
+              data-sitekey="3x00000000000000000000FF"
+              data-theme="dark"
+              data-size="flexible"
+              data-callback="onTurnstileSuccess"
+              data-error-callback="onTurnstileError"
+              data-expired-callback="onTurnstileExpired"
+            ></div>
+            <p class="work-item-meta turnstile-hint">
+              Complete the check above to download
+            </p>
+          </div>
+          <a id="thesis-download" target="_blank" hidden>
+            <p class="work-item-meta thesis-download-link">Download PDF</p>
           </a>
         </div>
       </section>

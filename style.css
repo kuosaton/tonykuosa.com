@@ -135,6 +135,10 @@ a:hover {
   display: block;
 }
 
+.work-item a[hidden] {
+  display: none;
+}
+
 .work-item-name {
   font-weight: 500;
   margin-bottom: 0.25rem;
@@ -144,6 +148,15 @@ a:hover {
   font-family: var(--mono);
   font-size: 0.75rem;
   color: var(--text-secondary);
+}
+
+.turnstile-hint {
+  margin-top: 0.5rem;
+}
+
+.thesis-download-link {
+  margin-top: 0.75rem;
+  color: var(--accent);
 }
 
 footer {
