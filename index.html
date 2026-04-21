@@ -37,7 +37,7 @@
   <body>
     <main>
       <h1>Tony Kuosa</h1>
-      <p class="subtitle">
+      <p class="subtitle subtitle--md">
         MSc Computer Science student @ University of Helsinki
       </p>
 
@@ -88,13 +88,15 @@
       <section>
         <h2>My work</h2>
         <div class="work-item">
-          <div id="thesis-info">
-            <p class="work-item-name">
-              Large Language Model-based Methods for Phishing Email Detection
-            </p>
-            <p class="work-item-meta">BSc thesis (PDF, 1.45 MB)</p>
-          </div>
-          <button id="thesis-download-btn" class="work-item-meta thesis-download-link" onclick="showTurnstile()">
+          <p class="work-item-name">
+            Large Language Model-based Methods for Phishing Email Detection
+          </p>
+          <p class="work-item-meta">BSc thesis (PDF, 1.45 MB)</p>
+          <button
+            id="thesis-download-btn"
+            class="work-item-meta thesis-download-link"
+            onclick="showTurnstile()"
+          >
             Download PDF
           </button>
           <div id="thesis-turnstile" hidden>
@@ -125,11 +127,11 @@
             src="/mail.png"
             width="168"
             height="16"
-            style="vertical-align: middle"
+            class="align-middle"
           />
         </p>
 
-        <p class="subtitle-small">
+        <p class="subtitle subtitle--sm">
           This email address image was created using my
           <a href="https://text-to-image.tonykuosa.com/" target="_blank"
             >text to image</a
