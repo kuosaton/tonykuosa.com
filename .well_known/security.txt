@@ -1,4 +1,5 @@
 Contact: mailto:security@tonykuosa.com
-Expires: 2027-03-04T08:00:00Z
-Canonical: https://tonykuosa.com/.well-known/security.txt
+Expires: 2027-05-08T12:00:00.000Z
+Encryption: https://tonykuosa.com/.well-known/pgp-key.txt
 Preferred-Languages: en, fi
+Canonical: https://tonykuosa.com/.well-known/security.txt
