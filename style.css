@@ -6,6 +6,8 @@
   box-sizing: border-box;
 }
 
+/* Fonts */
+
 @font-face {
   font-family: 'Noto Sans';
   src: url('/assets/fonts/Noto_Sans/NotoSans-VariableFont_wdth,wght.woff2')
@@ -15,6 +17,8 @@
   font-style: normal;
   font-display: swap;
 }
+
+/* Theme Tokens */
 
 :root {
   --bg: #d8f7ff;
@@ -45,7 +49,6 @@
   --accent: #7ce8ff;
   --accent-strong: #b7f7ff;
   --accent-light: rgba(75, 195, 255, 0.62);
-  --accent-subtle: rgba(196, 249, 255, 0.72);
   --border: rgba(255, 255, 255, 0.46);
   --border-strong: rgba(195, 249, 255, 0.42);
   --heading-filter: drop-shadow(0 -1px 1px rgba(0, 0, 0, 0.45))
@@ -81,6 +84,13 @@
   --text-md: 0.875rem;
   --text-lg: 2rem;
 
+  --weight-heading: 390;
+  --weight-subheading: 410;
+  --weight-body: 450;
+  --weight-label: 500;
+  --weight-action: 550;
+  --weight-strong: 600;
+
   --space-xs: 0.25rem;
   --space-sm: 0.5rem;
   --space-md: 1rem;
@@ -103,7 +113,6 @@
   --accent: #60a5fa;
   --accent-strong: #93c5fd;
   --accent-light: #1e3a5f;
-  --accent-subtle: #172033;
   --border: #292524;
   --border-strong: #292524;
   --shadow: none;
@@ -148,7 +157,6 @@
   --accent: #8bddff;
   --accent-strong: #c4f4ff;
   --accent-light: rgba(75, 170, 244, 0.72);
-  --accent-subtle: rgba(210, 245, 255, 0.78);
   --border: rgba(255, 255, 255, 0.48);
   --border-strong: rgba(178, 232, 255, 0.44);
   --shadow:
@@ -193,7 +201,6 @@
   --accent: #90ffe4;
   --accent-strong: #c5fff1;
   --accent-light: rgba(110, 220, 124, 0.66);
-  --accent-subtle: rgba(219, 255, 222, 0.8);
   --border: rgba(255, 255, 255, 0.44);
   --border-strong: rgba(202, 255, 226, 0.38);
   --shadow:
@@ -302,6 +309,8 @@
   );
 }
 
+/* Layout */
+
 html {
   min-height: 100%;
   background: var(--bg);
@@ -392,6 +401,8 @@ main {
   pointer-events: none;
 }
 
+/* Theme Lab */
+
 .theme-lab {
   display: inline-grid;
   justify-items: start;
@@ -408,7 +419,7 @@ main {
   box-shadow: var(--inner-shadow);
   color: var(--text-secondary);
   font-size: var(--text-sm);
-  font-weight: 500;
+  font-weight: var(--weight-label);
   position: relative;
   text-transform: lowercase;
 }
@@ -482,6 +493,8 @@ main {
   opacity: 0.55;
 }
 
+/* Typography */
+
 h1 {
   margin-bottom: var(--space-xs);
   color: var(--text);
@@ -491,7 +504,7 @@ h1 {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-size: clamp(2rem, 5vw, 2.35rem);
-  font-weight: 390;
+  font-weight: var(--weight-heading);
   line-height: 1.18;
   text-transform: lowercase;
 }
@@ -501,7 +514,7 @@ h1 {
   background: none;
   filter: none;
   font-size: var(--text-lg);
-  font-weight: 500;
+  font-weight: var(--weight-label);
   line-height: 1.7;
   text-transform: lowercase;
   -webkit-text-fill-color: currentColor;
@@ -516,7 +529,7 @@ h2 {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-size: clamp(1.35rem, 4vw, 1.65rem);
-  font-weight: 410;
+  font-weight: var(--weight-subheading);
   line-height: 1.24;
   text-transform: lowercase;
 }
@@ -526,7 +539,7 @@ h2 {
   background: none;
   filter: none;
   font-size: var(--text-sm);
-  font-weight: 500;
+  font-weight: var(--weight-label);
   line-height: 1.7;
   margin-bottom: var(--space-md);
   padding-bottom: var(--space-sm);
@@ -539,7 +552,7 @@ h2 {
 
 .subtitle {
   font-size: var(--text-md);
-  font-weight: 450;
+  font-weight: var(--weight-body);
   color: var(--text-secondary);
   margin-bottom: var(--space-lg);
 }
@@ -561,6 +574,8 @@ h2 {
 section {
   margin-bottom: var(--space-lg);
 }
+
+/* Links And Cards */
 
 .links,
 .news {
@@ -586,7 +601,7 @@ section {
   background: var(--control-bg);
   box-shadow: var(--inner-shadow);
   font-size: var(--text-md);
-  font-weight: 550;
+  font-weight: var(--weight-action);
   text-align: center;
 }
 
@@ -651,18 +666,18 @@ select:focus-visible {
 }
 
 .work-item-name {
-  font-weight: 600;
+  font-weight: var(--weight-strong);
   margin-bottom: var(--space-xs);
   text-transform: lowercase;
 }
 
 :root[data-theme='minimal'] .work-item-name {
-  font-weight: 500;
+  font-weight: var(--weight-label);
 }
 
 .work-item-meta {
   font-size: var(--text-sm);
-  font-weight: 450;
+  font-weight: var(--weight-body);
   color: var(--text-secondary);
 }
 
@@ -708,7 +723,7 @@ select:focus-visible {
   box-shadow: var(--inner-shadow);
   color: var(--accent);
   font-size: var(--text-md);
-  font-weight: 550;
+  font-weight: var(--weight-action);
   overflow-wrap: anywhere;
 }
 
@@ -763,7 +778,7 @@ footer {
   padding-top: var(--space-md);
   border-top: 1px solid var(--border-strong);
   font-size: var(--text-sm);
-  font-weight: 450;
+  font-weight: var(--weight-body);
   color: var(--text-secondary);
 }
 
