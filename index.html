@@ -45,21 +45,27 @@
           : 'dark'
       }
 
-      function updatePanelAssets(panel) {
-        var sourceIcon = document.querySelector('[data-source-icon]')
-        if (!sourceIcon) return
-
-        sourceIcon.src =
-          panel === 'light'
-            ? '/assets/GitHub_Invertocat_Black.svg'
-            : '/assets/GitHub_Invertocat_White.svg'
-      }
-
       function updatePanelControl(theme) {
         var panelSwitcher = document.querySelector('[data-panel-switcher]')
         if (!panelSwitcher) return
 
         panelSwitcher.disabled = theme === 'minimal'
+      }
+
+      function setThemeLabOpen(isOpen, storeValue) {
+        var themeLabToggle = document.querySelector('[data-theme-lab-toggle]')
+        var themeLabControls = document.getElementById('theme-lab-controls')
+
+        document.documentElement.dataset.themeLabOpen = isOpen ? 'true' : 'false'
+        if (themeLabToggle) {
+          themeLabToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false')
+        }
+        if (themeLabControls) {
+          themeLabControls.hidden = !isOpen
+        }
+        if (storeValue) {
+          storeValue('themeLabOpen', isOpen ? 'true' : 'false')
+        }
       }
 
       function renderTurnstile(containerId, callbacks) {
@@ -163,16 +169,30 @@
 
         var storedTheme = getStoredValue('theme')
         var storedPanel = getStoredValue('panel')
+        var storedThemeLabOpen = getStoredValue('themeLabOpen')
         var theme = storedTheme || 'polished-aero'
         var panel = storedPanel || 'dark'
+        var themeLabOpen = storedThemeLabOpen !== 'false'
 
         document.documentElement.dataset.theme = theme
         document.documentElement.dataset.panel = panel
-        updatePanelAssets(panel)
+        document.documentElement.dataset.themeLabOpen = themeLabOpen
+          ? 'true'
+          : 'false'
 
         window.addEventListener('DOMContentLoaded', function () {
+          var themeLabToggle = document.querySelector('[data-theme-lab-toggle]')
           var themeSwitcher = document.querySelector('[data-theme-switcher]')
           var panelSwitcher = document.querySelector('[data-panel-switcher]')
+
+          setThemeLabOpen(themeLabOpen)
+
+          if (themeLabToggle) {
+            themeLabToggle.addEventListener('click', function () {
+              themeLabOpen = !themeLabOpen
+              setThemeLabOpen(themeLabOpen, storeValue)
+            })
+          }
 
           if (themeSwitcher) {
             themeSwitcher.value = theme
@@ -190,7 +210,6 @@
             panelSwitcher.addEventListener('change', function (event) {
               var nextPanel = event.target.value
               document.documentElement.dataset.panel = nextPanel
-              updatePanelAssets(nextPanel)
               storeValue('panel', nextPanel)
             })
           }
@@ -201,23 +220,38 @@
 
   <body>
     <main>
-      <div class="theme-switcher" aria-label="Theme lab">
-        <label>
-          <span>Theme</span>
-          <select data-theme-switcher aria-label="Select visual theme">
-            <option value="polished-aero">Polished Aero</option>
-            <option value="vista-glass">Vista Glass</option>
-            <option value="eco-aero">Eco Aero</option>
-            <option value="minimal">Minimal</option>
-          </select>
-        </label>
-        <label>
-          <span>Panel</span>
-          <select data-panel-switcher aria-label="Select panel tone">
-            <option value="dark">Dark glass</option>
-            <option value="light">Light glass</option>
-          </select>
-        </label>
+      <div class="theme-lab">
+        <button
+          class="theme-lab-toggle"
+          type="button"
+          aria-expanded="true"
+          aria-controls="theme-lab-controls"
+          data-theme-lab-toggle
+        >
+          Theme lab
+        </button>
+        <div
+          id="theme-lab-controls"
+          class="theme-switcher"
+          aria-label="Theme lab controls"
+        >
+          <label>
+            <span>Theme</span>
+            <select data-theme-switcher aria-label="Select visual theme">
+              <option value="polished-aero">Polished Aero</option>
+              <option value="vista-glass">Vista Glass</option>
+              <option value="eco-aero">Eco Aero</option>
+              <option value="minimal">Minimal</option>
+            </select>
+          </label>
+          <label>
+            <span>Panel</span>
+            <select data-panel-switcher aria-label="Select panel tone">
+              <option value="dark">Dark glass</option>
+              <option value="light">Light glass</option>
+            </select>
+          </label>
+        </div>
       </div>
 
       <h1>Tony Kuosa</h1>
@@ -324,13 +358,7 @@
             class="source-link"
             target="_blank"
           >
-            <img
-              src="/assets/GitHub_Invertocat_White.svg"
-              data-source-icon
-              width="16"
-              height="16"
-              alt="GitHub logo"
-            />
+            <span class="source-icon" aria-hidden="true"></span>
             Source
           </a>
         </p>

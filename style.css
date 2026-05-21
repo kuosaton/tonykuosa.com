@@ -391,14 +391,16 @@ main {
   pointer-events: none;
 }
 
-.theme-switcher {
-  display: inline-flex;
-  align-items: center;
-  flex-wrap: wrap;
+.theme-lab {
+  display: inline-grid;
+  justify-items: start;
   gap: var(--space-sm);
   max-width: 100%;
   margin-bottom: var(--space-lg);
-  padding: 0.35rem 0.45rem 0.35rem 0.7rem;
+}
+
+.theme-lab-toggle,
+.theme-switcher {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--surface-strong);
@@ -408,6 +410,37 @@ main {
   font-weight: 500;
   position: relative;
   text-transform: lowercase;
+}
+
+.theme-lab-toggle {
+  cursor: pointer;
+  padding: 0.35rem 0.7rem;
+}
+
+.theme-lab-toggle:hover {
+  color: var(--text);
+}
+
+.theme-lab-toggle::after {
+  content: ' show';
+  color: var(--accent);
+}
+
+.theme-lab-toggle[aria-expanded='true']::after {
+  content: ' hide';
+}
+
+.theme-switcher {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  max-width: 100%;
+  padding: 0.35rem 0.45rem 0.35rem 0.7rem;
+}
+
+.theme-switcher[hidden] {
+  display: none;
 }
 
 .theme-switcher label {
@@ -706,6 +739,16 @@ select:focus-visible {
   color: var(--accent-strong);
 }
 
+.source-icon {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 auto;
+  background: currentColor;
+  -webkit-mask: url('/assets/GitHub_Invertocat_White.svg') center / contain
+    no-repeat;
+  mask: url('/assets/GitHub_Invertocat_White.svg') center / contain no-repeat;
+}
+
 :root[data-theme='minimal'] .source-link {
   padding: 0;
   border: 0;
@@ -743,6 +786,10 @@ footer p {
   .theme-switcher {
     width: 100%;
     align-items: stretch;
+  }
+
+  .theme-lab {
+    width: 100%;
   }
 
   .theme-switcher label {
