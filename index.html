@@ -4,19 +4,98 @@
     <meta charset="utf-8" />
     <meta name="author" content="Tony Kuosa" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tony Kuosa</title>
+    <title>tony kuosa</title>
     <link rel="stylesheet" href="/style.css" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <script>
+      var turnstileState = {
+        loading: false,
+        readyCallbacks: [],
+        widgets: {},
+      }
+
+      function loadTurnstile(callback) {
+        if (window.turnstile) {
+          callback()
+          return
+        }
+
+        turnstileState.readyCallbacks.push(callback)
+        if (turnstileState.loading) return
+
+        turnstileState.loading = true
+        var s = document.createElement('script')
+        s.src =
+          'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'
+        s.async = true
+        s.defer = true
+        s.onload = function () {
+          turnstileState.readyCallbacks
+            .splice(0)
+            .forEach(function (readyCallback) {
+              readyCallback()
+            })
+        }
+        document.head.appendChild(s)
+      }
+
+      function getTurnstileTheme() {
+        return document.documentElement.dataset.panel === 'light'
+          ? 'light'
+          : 'dark'
+      }
+
+      function updatePanelAssets(panel) {
+        var sourceIcon = document.querySelector('[data-source-icon]')
+        if (!sourceIcon) return
+
+        sourceIcon.src =
+          panel === 'light'
+            ? '/assets/GitHub_Invertocat_Black.svg'
+            : '/assets/GitHub_Invertocat_White.svg'
+      }
+
+      function updatePanelControl(theme) {
+        var panelSwitcher = document.querySelector('[data-panel-switcher]')
+        if (!panelSwitcher) return
+
+        panelSwitcher.disabled = theme === 'minimal'
+      }
+
+      function renderTurnstile(containerId, callbacks) {
+        loadTurnstile(function () {
+          var container = document.getElementById(containerId)
+          if (!container) return
+
+          if (turnstileState.widgets[containerId] !== undefined) {
+            window.turnstile.reset(turnstileState.widgets[containerId])
+            return
+          }
+
+          turnstileState.widgets[containerId] = window.turnstile.render(
+            container,
+            {
+              sitekey: '0x4AAAAAADAGK0JjHhqSRt6r',
+              theme: getTurnstileTheme(),
+              size: 'flexible',
+              callback: callbacks.success,
+              'error-callback': callbacks.error,
+              'expired-callback': callbacks.expired,
+            }
+          )
+        })
+      }
+
       function showTurnstile() {
         document.getElementById('thesis-download-btn').hidden = true
         document.getElementById('thesis-turnstile').hidden = false
-        if (!document.querySelector('script[src*="turnstile"]')) {
-          var s = document.createElement('script')
-          s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js'
-          document.head.appendChild(s)
-        }
+        renderTurnstile('thesis-turnstile-widget', {
+          success: onTurnstileSuccess,
+          error: onTurnstileError,
+          expired: onTurnstileExpired,
+        })
       }
+
       function onTurnstileSuccess(token) {
         document.getElementById('thesis-turnstile').hidden = true
         var link = document.getElementById('thesis-download')
@@ -31,11 +110,116 @@
         document.getElementById('thesis-turnstile').hidden = false
         document.getElementById('thesis-download').hidden = true
       }
+
+      function decodeEmailAddress() {
+        var chunks = ['Y29u', 'dGFj', 'dEB0', 'b255', 'a3Vv', 'c2Eu', 'Y29t']
+        return atob(chunks.join(''))
+      }
+
+      function showEmailTurnstile() {
+        document.getElementById('email-reveal-btn').hidden = true
+        document.getElementById('email-turnstile').hidden = false
+        document.getElementById('email-reveal').hidden = true
+        renderTurnstile('email-turnstile-widget', {
+          success: onEmailTurnstileSuccess,
+          error: onEmailTurnstileError,
+          expired: onEmailTurnstileExpired,
+        })
+      }
+
+      function onEmailTurnstileSuccess(token) {
+        document.getElementById('email-turnstile').hidden = true
+        var email = decodeEmailAddress()
+        var link = document.getElementById('email-reveal')
+        link.href = 'mailto:' + email
+        link.textContent = email
+        link.hidden = false
+      }
+
+      function onEmailTurnstileError(errorCode) {
+        document.getElementById('email-turnstile').hidden = false
+        document.getElementById('email-reveal').hidden = true
+      }
+
+      function onEmailTurnstileExpired() {
+        document.getElementById('email-turnstile').hidden = false
+        document.getElementById('email-reveal').hidden = true
+      }
+
+      ;(function () {
+        function getStoredValue(key) {
+          try {
+            return localStorage.getItem(key)
+          } catch (error) {
+            return null
+          }
+        }
+
+        function storeValue(key, value) {
+          try {
+            localStorage.setItem(key, value)
+          } catch (error) {}
+        }
+
+        var storedTheme = getStoredValue('theme')
+        var storedPanel = getStoredValue('panel')
+        var theme = storedTheme || 'polished-aero'
+        var panel = storedPanel || 'dark'
+
+        document.documentElement.dataset.theme = theme
+        document.documentElement.dataset.panel = panel
+        updatePanelAssets(panel)
+
+        window.addEventListener('DOMContentLoaded', function () {
+          var themeSwitcher = document.querySelector('[data-theme-switcher]')
+          var panelSwitcher = document.querySelector('[data-panel-switcher]')
+
+          if (themeSwitcher) {
+            themeSwitcher.value = theme
+            updatePanelControl(theme)
+            themeSwitcher.addEventListener('change', function (event) {
+              var nextTheme = event.target.value
+              document.documentElement.dataset.theme = nextTheme
+              updatePanelControl(nextTheme)
+              storeValue('theme', nextTheme)
+            })
+          }
+
+          if (panelSwitcher) {
+            panelSwitcher.value = panel
+            panelSwitcher.addEventListener('change', function (event) {
+              var nextPanel = event.target.value
+              document.documentElement.dataset.panel = nextPanel
+              updatePanelAssets(nextPanel)
+              storeValue('panel', nextPanel)
+            })
+          }
+        })
+      })()
     </script>
   </head>
 
   <body>
     <main>
+      <div class="theme-switcher" aria-label="Theme lab">
+        <label>
+          <span>Theme</span>
+          <select data-theme-switcher aria-label="Select visual theme">
+            <option value="polished-aero">Polished Aero</option>
+            <option value="vista-glass">Vista Glass</option>
+            <option value="eco-aero">Eco Aero</option>
+            <option value="minimal">Minimal</option>
+          </select>
+        </label>
+        <label>
+          <span>Panel</span>
+          <select data-panel-switcher aria-label="Select panel tone">
+            <option value="dark">Dark glass</option>
+            <option value="light">Light glass</option>
+          </select>
+        </label>
+      </div>
+
       <h1>Tony Kuosa</h1>
       <p class="subtitle subtitle--md">
         MSc Computer Science student @ University of Helsinki
@@ -100,15 +284,7 @@
             View file
           </button>
           <div id="thesis-turnstile" hidden>
-            <div
-              class="cf-turnstile"
-              data-sitekey="0x4AAAAAADAGK0JjHhqSRt6r"
-              data-theme="dark"
-              data-size="flexible"
-              data-callback="onTurnstileSuccess"
-              data-error-callback="onTurnstileError"
-              data-expired-callback="onTurnstileExpired"
-            ></div>
+            <div id="thesis-turnstile-widget"></div>
             <p class="work-item-meta turnstile-hint">
               Complete the check above to download
             </p>
@@ -121,23 +297,23 @@
 
       <section>
         <h2>Contact</h2>
-        <p>
-          Email:
-          <img
-            src="/assets/mail.png"
-            width="168"
-            height="16"
-            class="align-middle"
-          />
-        </p>
-
-        <p class="subtitle subtitle--sm">
-          This email address image was created using my
-          <a href="https://text-to-image.tonykuosa.com/" target="_blank"
-            >text to image</a
+        <div class="contact-card">
+          <p class="work-item-name">My email</p>
+          <button
+            id="email-reveal-btn"
+            class="work-item-meta reveal-link"
+            onclick="showEmailTurnstile()"
           >
-          tool. Curious? Try it out!
-        </p>
+            Reveal address
+          </button>
+          <div id="email-turnstile" hidden>
+            <div id="email-turnstile-widget"></div>
+            <p class="work-item-meta turnstile-hint">
+              Complete the check above to reveal email address
+            </p>
+          </div>
+          <a id="email-reveal" class="email-reveal" hidden></a>
+        </div>
       </section>
 
       <footer>
@@ -150,6 +326,7 @@
           >
             <img
               src="/assets/GitHub_Invertocat_White.svg"
+              data-source-icon
               width="16"
               height="16"
               alt="GitHub logo"
