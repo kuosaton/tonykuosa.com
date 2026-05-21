@@ -318,6 +318,7 @@ body {
   line-height: 1.7;
   display: flex;
   justify-content: center;
+  align-items: flex-start;
   padding: var(--space-xl) var(--space-md);
   position: relative;
   overflow-x: hidden;
