@@ -227,15 +227,15 @@
     drop-shadow(0 2px 2px rgba(23, 92, 117, 0.18));
   --heading-gradient: linear-gradient(
     180deg,
-    #d9fcff 0%,
-    #5798aa 44%,
-    #234f63 100%
+    #bcecf0 0%,
+    #4c91a2 44%,
+    #1f5066 100%
   );
   --heading-sub-gradient: linear-gradient(
     180deg,
-    #c9fbf4 0%,
-    #4f8f91 52%,
-    #315e69 100%
+    #b4e8dd 0%,
+    #4b8d8d 48%,
+    #2b5d66 100%
   );
   --shadow:
     0 1.5rem 4rem rgba(15, 96, 128, 0.22),
