@@ -22,13 +22,14 @@
 
 :root {
   --bg: #d8f7ff;
+  --bg-image: url('/assets/background.png');
   --bg-layer-1:
     linear-gradient(
       180deg,
       rgba(255, 255, 255, 0.1),
       rgba(221, 253, 255, 0.24)
     ),
-    url('/assets/background.png');
+    var(--bg-image);
   --bg-layer-2:
     radial-gradient(
       circle at 50% 42%,
@@ -135,7 +136,7 @@
       rgba(255, 255, 255, 0.16) 48%,
       rgba(18, 108, 184, 0.2)
     ),
-    url('/assets/background.png');
+    var(--bg-image);
   --bg-layer-2:
     linear-gradient(
       120deg,
@@ -180,7 +181,7 @@
       rgba(238, 254, 248, 0.2) 48%,
       rgba(143, 233, 105, 0.24)
     ),
-    url('/assets/background.png');
+    var(--bg-image);
   --bg-layer-2:
     radial-gradient(
       circle at 26% 82%,
@@ -791,12 +792,15 @@ footer p {
 
 @media (max-width: 38rem) {
   :root {
+    --bg-image: url('/assets/background-mobile.png');
     --space-xl: 1rem;
     --main-padding: 1rem;
   }
 
   body {
     padding: var(--space-md);
+    background-attachment: scroll;
+    background-position: center top;
   }
 
   .theme-switcher {
