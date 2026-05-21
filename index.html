@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="author" content="Tony Kuosa" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tony kuosa</title>
+    <title>Tony Kuosa</title>
     <link rel="stylesheet" href="/style.css" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <script>
@@ -56,9 +56,14 @@
         var themeLabToggle = document.querySelector('[data-theme-lab-toggle]')
         var themeLabControls = document.getElementById('theme-lab-controls')
 
-        document.documentElement.dataset.themeLabOpen = isOpen ? 'true' : 'false'
+        document.documentElement.dataset.themeLabOpen = isOpen
+          ? 'true'
+          : 'false'
         if (themeLabToggle) {
-          themeLabToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false')
+          themeLabToggle.setAttribute(
+            'aria-expanded',
+            isOpen ? 'true' : 'false'
+          )
         }
         if (themeLabControls) {
           themeLabControls.hidden = !isOpen
