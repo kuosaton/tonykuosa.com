@@ -1,5 +1,16 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
 Contact: mailto:security@tonykuosa.com
-Expires: 2027-05-08T12:00:00.000Z
+Expires: 2027-05-28T12:00:00.000Z
 Encryption: https://tonykuosa.com/.well-known/pgp-key.txt
 Preferred-Languages: en, fi
 Canonical: https://tonykuosa.com/.well-known/security.txt
+-----BEGIN PGP SIGNATURE-----
+
+iJEEARYKADkWIQRllH2PAJx1cNDsZvqkZKQJAy+qTgUCahg+LxsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMiwyLDEACgkQpGSkCQMvqk6GxAD/TaIafYVv+ce0uWCk44Ay
+RAyugA76rIwfGCt6B+/LVaUBAOnqh8e54az/QAGGaZ3WVuZOJiqXoJ1PLZkF5l5Y
+aIkG
+=GVOM
+-----END PGP SIGNATURE-----
