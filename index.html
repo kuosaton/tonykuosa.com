@@ -193,7 +193,7 @@
         var storedThemeLabOpen = getStoredValue('themeLabOpen')
         var theme = storedTheme || 'polished-aero'
         var panel = storedPanel || 'dark'
-        var themeLabOpen = storedThemeLabOpen !== 'false'
+        var themeLabOpen = storedThemeLabOpen === 'true'
 
         document.documentElement.dataset.theme = theme
         document.documentElement.dataset.panel = panel
