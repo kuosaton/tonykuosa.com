@@ -46,13 +46,6 @@
           : 'dark'
       }
 
-      function updatePanelControl(theme) {
-        var panelSwitcher = document.querySelector('[data-panel-switcher]')
-        if (!panelSwitcher) return
-
-        panelSwitcher.disabled = theme === 'minimal'
-      }
-
       function setThemeLabOpen(isOpen, storeValue) {
         var themeLabToggle = document.querySelector('[data-theme-lab-toggle]')
         var themeLabControls = document.getElementById('theme-lab-controls')
@@ -217,11 +210,9 @@
 
           if (themeSwitcher) {
             themeSwitcher.value = theme
-            updatePanelControl(theme)
             themeSwitcher.addEventListener('change', function (event) {
               var nextTheme = event.target.value
               document.documentElement.dataset.theme = nextTheme
-              updatePanelControl(nextTheme)
               storeValue('theme', nextTheme)
             })
           }
@@ -265,7 +256,7 @@
               <option value="minimal">Minimal</option>
             </select>
           </label>
-          <label>
+          <label class="panel-control">
             <span>Panel</span>
             <select data-panel-switcher aria-label="Select panel tone">
               <option value="dark">Dark glass</option>

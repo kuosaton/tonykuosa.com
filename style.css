@@ -500,9 +500,9 @@ main {
   color: #f2fbff;
 }
 
-.theme-switcher select:disabled {
-  cursor: not-allowed;
-  opacity: 0.55;
+/* Minimal has no glass panels, so the panel tone control doesn't apply. */
+:root[data-theme='minimal'] .panel-control {
+  display: none;
 }
 
 /* Typography */
