@@ -422,7 +422,6 @@ main {
   font-size: var(--text-sm);
   font-weight: var(--weight-label);
   position: relative;
-  text-transform: lowercase;
 }
 
 .theme-lab-toggle {
@@ -461,7 +460,6 @@ main {
   align-items: center;
   gap: var(--space-sm);
   min-width: 0;
-  text-transform: lowercase;
 }
 
 .theme-switcher select {
@@ -473,13 +471,11 @@ main {
   color: var(--text);
   font: inherit;
   padding: 0.25rem 1.7rem 0.25rem 0.5rem;
-  text-transform: lowercase;
 }
 
 .theme-switcher option {
   background: #ffffff;
   color: #123047;
-  text-transform: lowercase;
 }
 
 :root:not([data-panel='light']):not([data-theme='minimal'])
@@ -496,59 +492,67 @@ main {
 
 /* Typography */
 
-h1 {
+/* Headings and UI chrome render lowercase; body prose and link labels keep
+   their case. The .theme-switcher label inherits this from .theme-switcher;
+   native select/option are listed explicitly since they inherit unreliably. */
+h1,
+h2,
+.theme-lab-toggle,
+.theme-switcher,
+.theme-switcher select,
+.theme-switcher option,
+.work-item-name,
+.thesis-download-link,
+.reveal-link {
+  text-transform: lowercase;
+}
+
+/* Shared gradient-text treatment for both heading levels. */
+h1,
+h2 {
   margin-bottom: var(--space-xs);
-  color: var(--text);
   filter: var(--heading-filter);
-  background: var(--heading-gradient);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+h1 {
+  color: var(--text);
+  background-image: var(--heading-gradient);
   font-size: clamp(2rem, 5vw, 2.35rem);
   font-weight: var(--weight-heading);
   line-height: 1.18;
-  text-transform: lowercase;
-}
-
-:root[data-theme='minimal'] h1 {
-  color: var(--text);
-  background: none;
-  filter: none;
-  font-size: var(--text-lg);
-  font-weight: var(--weight-label);
-  line-height: 1.7;
-  text-transform: lowercase;
-  -webkit-text-fill-color: currentColor;
 }
 
 h2 {
-  margin-bottom: var(--space-xs);
   color: var(--text-secondary);
-  filter: var(--heading-filter);
-  background: var(--heading-sub-gradient);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background-image: var(--heading-sub-gradient);
   font-size: clamp(1.35rem, 4vw, 1.65rem);
   font-weight: var(--weight-subheading);
   line-height: 1.24;
-  text-transform: lowercase;
+}
+
+/* Minimal theme drops the gradient/glass treatment for flat text. */
+:root[data-theme='minimal'] :is(h1, h2) {
+  background-image: none;
+  filter: none;
+  font-weight: var(--weight-label);
+  line-height: 1.7;
+  -webkit-text-fill-color: currentColor;
+}
+
+:root[data-theme='minimal'] h1 {
+  font-size: var(--text-lg);
 }
 
 :root[data-theme='minimal'] h2 {
-  color: var(--text-secondary);
-  background: none;
-  filter: none;
   font-size: var(--text-sm);
-  font-weight: var(--weight-label);
-  line-height: 1.7;
   margin-bottom: var(--space-md);
   padding-bottom: var(--space-sm);
   padding-left: var(--space-md);
   border-bottom: 1px solid var(--border-strong);
   border-left: 3px solid var(--accent-light);
-  text-transform: lowercase;
-  -webkit-text-fill-color: currentColor;
 }
 
 .subtitle {
@@ -559,12 +563,6 @@ h2 {
 }
 
 .subtitle--md {
-  font-size: var(--text-md);
-  margin-bottom: var(--space-md);
-}
-
-.subtitle--sm {
-  font-size: var(--text-sm);
   margin-bottom: var(--space-md);
 }
 
@@ -593,26 +591,40 @@ section {
   flex-wrap: wrap;
 }
 
-.links a {
-  display: inline-block;
-  min-width: 5rem;
-  padding: 0.35rem 0.75rem;
+/* Shared "glass control" surface for the pill-style links and buttons. */
+.links a,
+.email-reveal,
+.source-link {
   border: 1px solid var(--border-strong);
   border-radius: var(--radius);
   background: var(--control-bg);
   box-shadow: var(--inner-shadow);
+  color: var(--accent);
+}
+
+.links a {
+  display: inline-block;
+  min-width: 5rem;
+  padding: 0.35rem 0.75rem;
   font-size: var(--text-md);
   font-weight: var(--weight-action);
   text-align: center;
 }
 
-:root[data-theme='minimal'] .links a {
-  min-width: 0;
+/* Minimal theme strips the glass surfaces back to flat. */
+:root[data-theme='minimal'] :is(.links a, .source-link, .work-item, .contact-card) {
+  background: transparent;
+  box-shadow: none;
+}
+
+:root[data-theme='minimal'] :is(.links a, .source-link) {
   padding: 0;
   border: 0;
   border-radius: 0;
-  background: transparent;
-  box-shadow: none;
+}
+
+:root[data-theme='minimal'] .links a {
+  min-width: 0;
   text-align: left;
 }
 
@@ -651,12 +663,6 @@ select:focus-visible {
   max-width: 100%;
 }
 
-:root[data-theme='minimal'] .work-item,
-:root[data-theme='minimal'] .contact-card {
-  background: transparent;
-  box-shadow: none;
-}
-
 .work-item a {
   color: inherit;
   display: block;
@@ -669,7 +675,6 @@ select:focus-visible {
 .work-item-name {
   font-weight: var(--weight-strong);
   margin-bottom: var(--space-xs);
-  text-transform: lowercase;
 }
 
 :root[data-theme='minimal'] .work-item-name {
@@ -699,7 +704,6 @@ select:focus-visible {
   border: none;
   cursor: pointer;
   padding: 0;
-  text-transform: lowercase;
 }
 
 .contact-card .reveal-link {
@@ -718,11 +722,6 @@ select:focus-visible {
   max-width: 100%;
   margin-top: var(--space-sm);
   padding: 0.35rem 0.75rem;
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius);
-  background: var(--control-bg);
-  box-shadow: var(--inner-shadow);
-  color: var(--accent);
   font-size: var(--text-md);
   font-weight: var(--weight-action);
   overflow-wrap: anywhere;
@@ -736,20 +735,11 @@ select:focus-visible {
   color: var(--accent-strong);
 }
 
-.align-middle {
-  vertical-align: middle;
-}
-
 .source-link {
   display: inline-flex;
   align-items: center;
   gap: var(--space-xs);
   padding: 0.18rem 0.45rem;
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius);
-  background: var(--control-bg);
-  box-shadow: var(--inner-shadow);
-  color: var(--accent);
 }
 
 .source-link:hover {
@@ -764,14 +754,6 @@ select:focus-visible {
   -webkit-mask: url('/assets/GitHub_Invertocat_White.svg') center / contain
     no-repeat;
   mask: url('/assets/GitHub_Invertocat_White.svg') center / contain no-repeat;
-}
-
-:root[data-theme='minimal'] .source-link {
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  color: var(--accent);
 }
 
 footer {
