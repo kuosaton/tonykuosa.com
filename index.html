@@ -98,67 +98,79 @@
         })
       }
 
-      function showTurnstile() {
-        document.getElementById('thesis-download-btn').hidden = true
-        document.getElementById('thesis-turnstile').hidden = false
-        renderTurnstile('thesis-turnstile-widget', {
-          success: onTurnstileSuccess,
-          error: onTurnstileError,
-          expired: onTurnstileExpired,
-        })
-      }
-
-      function onTurnstileSuccess(token) {
-        document.getElementById('thesis-turnstile').hidden = true
-        var link = document.getElementById('thesis-download')
-        // encoded path to the thesis PDF, revealed only after turnstile check passes
-        link.href = decodeReveal('L2Fzc2V0cy90aGVzaXMuYzZkOTNiYWQwNjRkLnBkZg==')
-        link.hidden = false
-      }
-      function onTurnstileError(errorCode) {
-        document.getElementById('thesis-turnstile').hidden = false
-        document.getElementById('thesis-download').hidden = true
-      }
-      function onTurnstileExpired() {
-        document.getElementById('thesis-turnstile').hidden = false
-        document.getElementById('thesis-download').hidden = true
-      }
-
       // decodes a base64-encoded value once a Turnstile check has passed
       // base64 is not encryption, the real gate is the human verification
       function decodeReveal(encoded) {
         return atob(encoded)
       }
 
+      // Builds one reveal flow: a trigger button that swaps in a Turnstile
+      // widget, then reveals a hidden element once the check passes. The
+      // thesis download and the email share this exact state machine.
+      function createRevealFlow(config) {
+        function setHidden(id, hidden) {
+          document.getElementById(id).hidden = hidden
+        }
+
+        function show() {
+          setHidden(config.buttonId, true)
+          setHidden(config.panelId, false)
+          setHidden(config.revealId, true)
+          renderTurnstile(config.widgetId, {
+            success: onSuccess,
+            error: onUnverified,
+            expired: onUnverified,
+          })
+        }
+
+        function onSuccess() {
+          setHidden(config.panelId, true)
+          config.reveal(document.getElementById(config.revealId))
+        }
+
+        // error and expired land in the same place: re-show the check.
+        function onUnverified() {
+          setHidden(config.panelId, false)
+          setHidden(config.revealId, true)
+        }
+
+        return { show: show }
+      }
+
+      var thesisFlow = createRevealFlow({
+        buttonId: 'thesis-download-btn',
+        panelId: 'thesis-turnstile',
+        widgetId: 'thesis-turnstile-widget',
+        revealId: 'thesis-download',
+        reveal: function (link) {
+          // encoded path to the thesis PDF, revealed only after the check passes
+          link.href = decodeReveal(
+            'L2Fzc2V0cy90aGVzaXMuYzZkOTNiYWQwNjRkLnBkZg=='
+          )
+          link.hidden = false
+        },
+      })
+
+      var emailFlow = createRevealFlow({
+        buttonId: 'email-reveal-btn',
+        panelId: 'email-turnstile',
+        widgetId: 'email-turnstile-widget',
+        revealId: 'email-reveal',
+        reveal: function (link) {
+          // encoded contact email, revealed only after the check passes
+          var email = decodeReveal('bWVAdG9ueWt1b3NhLmNvbQ==')
+          link.href = 'mailto:' + email
+          link.textContent = email
+          link.hidden = false
+        },
+      })
+
+      function showTurnstile() {
+        thesisFlow.show()
+      }
+
       function showEmailTurnstile() {
-        document.getElementById('email-reveal-btn').hidden = true
-        document.getElementById('email-turnstile').hidden = false
-        document.getElementById('email-reveal').hidden = true
-        renderTurnstile('email-turnstile-widget', {
-          success: onEmailTurnstileSuccess,
-          error: onEmailTurnstileError,
-          expired: onEmailTurnstileExpired,
-        })
-      }
-
-      function onEmailTurnstileSuccess(token) {
-        document.getElementById('email-turnstile').hidden = true
-        // encoded contact email, revealed only after turnstile check passes
-        var email = decodeReveal('bWVAdG9ueWt1b3NhLmNvbQ==')
-        var link = document.getElementById('email-reveal')
-        link.href = 'mailto:' + email
-        link.textContent = email
-        link.hidden = false
-      }
-
-      function onEmailTurnstileError(errorCode) {
-        document.getElementById('email-turnstile').hidden = false
-        document.getElementById('email-reveal').hidden = true
-      }
-
-      function onEmailTurnstileExpired() {
-        document.getElementById('email-turnstile').hidden = false
-        document.getElementById('email-reveal').hidden = true
+        emailFlow.show()
       }
 
       ;(function () {
