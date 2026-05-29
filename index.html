@@ -30,6 +30,7 @@
         s.async = true
         s.defer = true
         s.onload = function () {
+          // drain the queue before running so callbacks can't double-fire
           turnstileState.readyCallbacks
             .splice(0)
             .forEach(function (readyCallback) {
@@ -110,7 +111,8 @@
       function onTurnstileSuccess(token) {
         document.getElementById('thesis-turnstile').hidden = true
         var link = document.getElementById('thesis-download')
-        link.href = atob('L2Fzc2V0cy90aGVzaXMuYzZkOTNiYWQwNjRkLnBkZg==')
+        // encoded path to the thesis PDF, revealed only after turnstile check passes
+        link.href = decodeReveal('L2Fzc2V0cy90aGVzaXMuYzZkOTNiYWQwNjRkLnBkZg==')
         link.hidden = false
       }
       function onTurnstileError(errorCode) {
@@ -122,9 +124,10 @@
         document.getElementById('thesis-download').hidden = true
       }
 
-      function decodeEmailAddress() {
-        var chunks = ['Y29u', 'dGFj', 'dEB0', 'b255', 'a3Vv', 'c2Eu', 'Y29t']
-        return atob(chunks.join(''))
+      // decodes a base64-encoded value once a Turnstile check has passed
+      // base64 is not encryption, the real gate is the human verification
+      function decodeReveal(encoded) {
+        return atob(encoded)
       }
 
       function showEmailTurnstile() {
@@ -140,7 +143,8 @@
 
       function onEmailTurnstileSuccess(token) {
         document.getElementById('email-turnstile').hidden = true
-        var email = decodeEmailAddress()
+        // encoded contact email, revealed only after turnstile check passes
+        var email = decodeReveal('bWVAdG9ueWt1b3NhLmNvbQ==')
         var link = document.getElementById('email-reveal')
         link.href = 'mailto:' + email
         link.textContent = email
